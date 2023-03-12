@@ -132,3 +132,4 @@ dmypy.json
 /private_data/*
 /test_images
 /app/static/
+*.jpg
