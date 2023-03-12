@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block main %}
+<!--https://getbootstrap.com/docs/4.0/components/forms/-->
+<form method="POST" enctype="multipart/form-data" action="/upload_image">
+    <label for="inputGroupFile1">1. Converting bad ECG images to clearer waves.</label>
+    <div class="input-group">
+
+        <div class="custom-file">
+            <input name="file" accept=".jpg" type="file" class="custom-file-input" id="inputGroupFile1"
+                   aria-describedby="inputGroupFileAddon1">
+            <label class="custom-file-label" for="inputGroupFile1">Choose file</label>
+        </div>
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="Submit" id="inputGroupFileAddon1">Upload</button>
+        </div>
+
+    </div>
+</form>
+
+<form method="POST" enctype="multipart/form-data" action="/upload_pdf">
+    <label for="inputGroupFile2">2. Extracting wave from clear ECG PDF</label>
+    <div class="input-group">
+
+        <div class="custom-file">
+            <input name="file" accept=".pdf" type="file" class="custom-file-input" id="inputGroupFile2"
+                   aria-describedby="inputGroupFileAddon2">
+            <label class="custom-file-label" for="inputGroupFile2">Choose file</label>
+        </div>
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="Submit" id="inputGroupFileAddon2">Upload</button>
+        </div>
+
+    </div>
+</form>
+
+<!--<form method="POST" enctype="multipart/form-data" action="/upload_image">-->
+<!--    <div class="input-group">-->
+
+<!--        <div class="custom-file">-->
+<!--            <input name="file" accept=".jpg" type="file" class="custom-file-input" id="inputGroupFile3"-->
+<!--                   aria-describedby="inputGroupFileAddon04">-->
+<!--            <label class="custom-file-label" for="inputGroupFile3">Choose file</label>-->
+<!--        </div>-->
+<!--        <div class="input-group-append">-->
+<!--            <button class="btn btn-outline-secondary" type="Submit" id="inputGroupFileAddon3">Upload</button>-->
+<!--        </div>-->
+
+<!--    </div>-->
+<!--</form>-->
+
+{% endblock %}

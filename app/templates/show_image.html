@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block main %}
+<a href="{{ url_for('index') }}" class="btn btn-primary">Upload Another Image</a>
+<img src="{{ user_image }}" class="img-fluid" alt="ECG Graph Image">
+{% endblock %}
