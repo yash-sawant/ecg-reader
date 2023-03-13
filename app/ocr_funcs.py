@@ -8,8 +8,8 @@ pytesseract.pytesseract.tesseract_cmd = r'C:\\Users\\yashs\\Workspace\\Softwares
 
 img_pah = './static/EK_000001.jpg'
 
-# # Simple image to string
-# print(pytesseract.image_to_string(Image.open(img_pah)))
+# Simple image to string
+print(pytesseract.image_to_string(Image.open(img_pah)))
 #
 # # Get bounding box estimates
 # print(pytesseract.image_to_boxes(Image.open(img_pah)))
