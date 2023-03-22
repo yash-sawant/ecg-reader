@@ -3,13 +3,18 @@ import json
 import numpy as np
 import cv2
 import os
+os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 from flask import Flask, flash, redirect, request, Response, render_template, session
 import io
 from werkzeug.utils import secure_filename
+
+from ocr_funcs import get_crops
 from cv_funcs import transform
 from PIL import Image
 from pdf_funcs import get_image_from_pdf_bytes
 from cv_funcs import custom_thresholding
+
+
 # Initialize the Flask application
 app = Flask(__name__)
 
@@ -55,7 +60,7 @@ def uploadFile():
         img = Image.fromarray(npimg)
 
         img.save(file_path)
-        return render_template('show_image.html', user_image=file_path)
+        return render_template('show_image.html', images=[('', file_path)])
 
 
 @app.route('/upload_pdf', methods=["POST"])
@@ -74,7 +79,7 @@ def upload_pdf():
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        output_prefix = os.path.splitext(filename)[0]+'.jpg'
+        output_prefix = os.path.splitext(filename)[0] + '.jpg'
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], output_prefix)
         data = io.BytesIO()
         file.save(data)
@@ -91,7 +96,7 @@ def upload_pdf():
         img = Image.fromarray(img)
 
         img.save(file_path)
-        return render_template('show_image.html', user_image=file_path)
+        return render_template('show_image.html', images=[('', file_path)])
 
 
 @app.route('/ocr_pdf', methods=["POST"])
@@ -110,7 +115,7 @@ def upload_pdf_ocr():
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        output_prefix = os.path.splitext(filename)[0]+'.jpg'
+        output_prefix = os.path.splitext(filename)[0] + '.jpg'
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], output_prefix)
         data = io.BytesIO()
         file.save(data)
@@ -118,12 +123,20 @@ def upload_pdf_ocr():
 
         img = get_image_from_pdf_bytes(data)
 
+        img_list = get_crops(img)
+        img_paths = []
+        for name, c_img in img_list:
+            print(name)
+            print(c_img.shape)
+            if 0 in c_img.shape:
+                continue
+            # c_img = Image.fromarray(c_img)
+            i_path = os.path.splitext(file_path)[0] + name + '.jpg'
 
+            cv2.imwrite(i_path,c_img)
+            img_paths.append((name, i_path))
 
-        img = Image.fromarray(img)
-
-        img.save(file_path)
-        return render_template('show_image.html', user_image=file_path)
+        return render_template('show_image.html', images=img_paths)
 
 
 if __name__ == '__main__':

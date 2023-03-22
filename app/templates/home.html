@@ -18,7 +18,7 @@
 </form>
 
 <form method="POST" enctype="multipart/form-data" action="/upload_pdf">
-    <label for="inputGroupFile2">2. Extracting wave from clear ECG PDF</label>
+    <label for="inputGroupFile2">2. Extracting PDF as image</label>
     <div class="input-group">
 
         <div class="custom-file">
@@ -28,6 +28,22 @@
         </div>
         <div class="input-group-append">
             <button class="btn btn-outline-secondary" type="Submit" id="inputGroupFileAddon2">Upload</button>
+        </div>
+
+    </div>
+</form>
+
+<form method="POST" enctype="multipart/form-data" action="/ocr_pdf">
+    <label for="inputGroupFile2">3. Extracting waves from clear ECG PDF</label>
+    <div class="input-group">
+
+        <div class="custom-file">
+            <input name="file" accept=".pdf" type="file" class="custom-file-input" id="inputGroupFile3"
+                   aria-describedby="inputGroupFileAddon3">
+            <label class="custom-file-label" for="inputGroupFile3">Choose file</label>
+        </div>
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="Submit" id="inputGroupFileAddon3">Upload</button>
         </div>
 
     </div>

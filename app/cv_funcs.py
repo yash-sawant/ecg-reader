@@ -13,6 +13,17 @@ h = [1]
 OUTPUT_SIZE = (564, 400)
 
 
+def easy_ocr_thresholding(img):
+    kernel = np.ones((2, 2), np.uint8)
+    red_mask = np.where(img[:, :, 0] > 200, 1, 0)
+    blue_mask = np.where(img[:, :, 1] > 200, 1, 0)
+    green_mask = np.where(img[:, :, 2] > 200, 1, 0)
+    bin_img = np.logical_or.reduce((red_mask, blue_mask, green_mask)).astype(np.uint8)*255
+    img = cv2.dilate(bin_img, kernel, iterations=1)
+    img = cv2.erode(img, kernel, iterations=1)
+    return img
+
+
 def process_img(img):
     # Get the dimensions of the image
     height, width = img.shape[:2]
@@ -93,18 +104,6 @@ def Hist(img):
     x = np.arange(0, 256)
     plt.bar(x, y, color='b', width=5, align='center', alpha=0.25)
     plt.show()
-    return y
-
-
-def regenerate_img(img, threshold):
-    row, col = img.shape
-    y = np.zeros((row, col))
-    for i in range(0, row):
-        for j in range(0, col):
-            if img[i, j] >= threshold:
-                y[i, j] = 255
-            else:
-                y[i, j] = 0
     return y
 
 
