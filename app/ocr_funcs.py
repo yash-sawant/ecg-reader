@@ -2,9 +2,11 @@ from PIL import Image
 # import pytesseract
 # from pytesseract import Output
 import cv2
+import os
 import numpy as np
+os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 from easyocr import Reader
-from cv_funcs import easy_ocr_thresholding
+from .cv_funcs import easy_ocr_thresholding
 import re
 from collections import OrderedDict
 
@@ -97,11 +99,12 @@ def get_crops(img):
             else:
                 h_buf = v
     h_buf = None
-    for k, v in cc['h'].items():
-        if not v and h_buf:
-            cc['h'][k] = h_buf + horizontal_def
-        else:
-            h_buf = v
+    if horizontal_def:
+        for k, v in cc['h'].items():
+            if not v and h_buf:
+                cc['h'][k] = h_buf + horizontal_def
+            else:
+                h_buf = v
 
     for k, v in cc['v'].items():
         if v:
@@ -111,11 +114,12 @@ def get_crops(img):
             else:
                 v_buf = v
     v_buf = None
-    for k, v in cc['h'].items():
-        if not v and v_buf:
-            cc['h'][k] = h_buf + vertical_def
-        else:
-            v_buf = v
+    if vertical_def:
+        for k, v in cc['h'].items():
+            if not v and v_buf:
+                cc['h'][k] = h_buf + vertical_def
+            else:
+                v_buf = v
 
     cc = {}
     for k, v in crop_coord['h'].items():
@@ -140,7 +144,7 @@ def get_crops(img):
         'II_2': [[cc['v1'], cc['h4']], ['end', 'end']]
     }
     H, W = img.shape[:2]
-    print(img.shape)
+    #print(img.shape)
     images_list = []
 
     for k, v in crop_ref.items():
@@ -153,8 +157,8 @@ def get_crops(img):
             tl[1] = H
         if br[1] == 'end':
             br[1] = H
-        print(k)
-        print(tl,br)
+        #print(k)
+        #print(tl,br)
         images_list.append((k, crop_img(img, [tl,br])))
 
     return images_list

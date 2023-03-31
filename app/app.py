@@ -3,7 +3,7 @@ import json
 import numpy as np
 import cv2
 import os
-os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
+
 from flask import Flask, flash, redirect, request, Response, render_template, session
 import io
 from werkzeug.utils import secure_filename
