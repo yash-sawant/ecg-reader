@@ -115,9 +115,9 @@ def get_crops(img):
                 v_buf = v
     v_buf = None
     if vertical_def:
-        for k, v in cc['h'].items():
+        for k, v in cc['v'].items():
             if not v and v_buf:
-                cc['h'][k] = h_buf + vertical_def
+                cc['v'][k] = v_buf + vertical_def
             else:
                 v_buf = v
 
