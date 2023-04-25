@@ -13,7 +13,7 @@ from cv_funcs import transform
 from PIL import Image
 from pdf_funcs import get_image_from_pdf_bytes
 from cv_funcs import custom_thresholding
-
+from prediction import predict
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -137,6 +137,58 @@ def upload_pdf_ocr():
             img_paths.append((name, i_path))
 
         return render_template('show_image.html', images=img_paths)
+
+
+@app.route('/ml_II', methods=["POST"])
+def inference_II():
+    file_path = ''
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+
+    file = request.files['file']
+    # if user does not select file, browser also
+    # submit an empty part without filename
+    if file.filename == '':
+        flash('No selected file')
+        return redirect(request.url)
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        output_prefix = os.path.splitext(filename)[0] + '.jpg'
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], output_prefix)
+        data = io.BytesIO()
+        file.save(data)
+        data.seek(0)
+
+        img = get_image_from_pdf_bytes(data)
+
+        img_list = get_crops(img)
+        img_II = None
+        img_II_path = None
+
+        for name, c_img in img_list:
+
+            if name == 'II':
+                print(name)
+                print(c_img.shape)
+
+                if 0 in c_img.shape:
+                    return {'Error':'II not found in uploaded img'}
+                i_path = os.path.splitext(file_path)[0] + name + '.jpg'
+                print(i_path)
+                img_II = c_img
+                img_II_path = i_path
+                cv2.imwrite(i_path,c_img)
+
+        if img_II_path:
+            result = predict(img_II)
+
+            return render_template('prediction.html', name='II', img=img_II_path, result=result)
+        else:
+            return {'Error':'II not found in uploaded img'}
+    return {'Error':'No file uploaded'}
+
 
 
 if __name__ == '__main__':

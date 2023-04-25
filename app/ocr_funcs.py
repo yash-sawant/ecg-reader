@@ -6,7 +6,7 @@ import os
 import numpy as np
 os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 from easyocr import Reader
-from .cv_funcs import easy_ocr_thresholding
+from cv_funcs import easy_ocr_thresholding
 import re
 from collections import OrderedDict
 

@@ -129,7 +129,8 @@ dmypy.json
 .pyre/
 
 .idea
-/private_data/*
-/test_images
-/app/static/
+private_data/*
+test_images/*
+app/static/*
+app/model/*
 *.jpg
